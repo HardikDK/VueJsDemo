@@ -4,15 +4,40 @@ import Header from './Header.vue'
 import Footer from './Footer.vue'
 import Register from './Register.vue'
 import Sidebar from './Sidebar.vue'
+import router from '../router'
 // const currentTab = ref('Register')
 // const tabs = {
 //   Register
 // }
-const routes = {
-  // '/': Home,
-  // '/about': About,
-  '/register': Register
-}
+// const routes = {
+//   // '/': Home,
+//   // '/about': About,
+//   '/register': Register
+// }
+// console.log(router)
+// console.log(router.currentRoute)
+// console.log(window)
+// console.log(window.location.reload)
+// alert(window)
+// alert(window.location.pathname)
+// alert(window.location.href)
+const links = [
+  {
+    title: 'Home',
+    disabled: false,
+    href: '/',
+  },
+  {
+    title: window.location.pathname,
+    disabled: true,
+    href: window.location.href.split('/'),
+  },
+  // {
+  //   title: 'Link 2',
+  //   disabled: true,
+  //   href: 'breadcrumbs_link_2',
+  // },  
+]
 
 // const currentPath = ref(window.location.hash)
 
@@ -23,6 +48,10 @@ const routes = {
 // element () {
 //   return this.href ? 'a' : 'button';
 // }
+// {{$route.path}}
+// {{ item.title }}
+
+
 
 const currentView = computed(() => {
   // return routes[currentPath.value.slice(1) || '/'] || NotFound
@@ -32,7 +61,13 @@ const currentView = computed(() => {
 
 <template>
   <Header />    
-  <main>
+  <main style="z-index: 1;">
+    <v-breadcrumbs :items="links" style="margin-bottom: 0;margin-top: 5%;">
+    
+      <template v-slot:title="{ item }">
+        {{ item.title }}
+      </template>
+    </v-breadcrumbs>
     <router-view/>
   </main>
   <Footer />

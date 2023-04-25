@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <footer class="footer">
+  <footer class="footer" style="z-index: 2;">
     <p>Author: Karavya Solutions LLP</p>
     <p><a href="mailto:info@karavyasolutions.com">info@karavyasolutions.com</a></p>
   </footer> 

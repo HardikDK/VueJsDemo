@@ -10,8 +10,34 @@ export default {
   console.log('email', sessionStorage.email)
     return {
       items: this.items,
+      totalProducts: this.totalProducts,
+      total: this.total,
+      // totalProductsLimit: this.totalProductsLimit,
       products: this.products,
       columns: this.columns,
+      length: this.length,
+      limit: this.limit,
+      isActive: false,
+      queries: ['phone', 'Laptop', 'sunglasses', 'furniture', 'home', 'motorcycle', 'lighting', 'watch', 'bags', 'handbags', 'ring'],
+      productId: this.productId,
+      CartProducts: [],
+      links: [
+        {
+          title: 'Home',
+          disabled: false,
+          href: '/',
+        },
+        {
+          title: 'Products',
+          disabled: false,
+          href: 'products',
+        },
+        // {
+        //   title: 'Link 2',
+        //   disabled: true,
+        //   href: 'breadcrumbs_link_2',
+        // },
+      ],
       // text: '',
       // id: sessionStorage.id,
       // name: sessionStorage.name,
@@ -20,18 +46,33 @@ export default {
   },
   mounted () {
     axios
-      .get('https://dummyjson.com/products',{
+      .get('https://dummyjson.com/products?limit=6',{
         mode: 'no-cors',
         headers: {
           // Authorization : `Bearer ${sessionStorage.jwtToken}` 
         }
       })
       .then(response => {
+        // this.length = 6;
+        // this.limit = response.data.limit;
+        this.limit = 6;
+        console.log('l', this.length);
+        // alert(response.data.limit)
+        // console.log('s', this.products.slice(0, this.length));
+        // console.log('s', response.data.products.slice(0, this.length));
+        // this.products = response.data.products.slice(0, this.limit);
         console.log('response', response)
         console.log(Object.keys(response.data.products[0]))
         this.items = response;
-        this.products = response.data.products
         this.columns = Object.keys(response.data.products[0]);
+        this.totalProducts = response.data;
+        this.total = response.data.total;
+        // this.products = response.data.products.slice(0, this.length);
+        this.products = response.data.products;
+        // return this.products.slice(0, this.length);
+        // this.products = this.totalProducts.slice(0, this.length);
+        // console.log('t', this.totalProducts);
+        // console.log('t', this.products);
       });
     axios
       // .get('https://dummyjson.com/products/category/smartphones',{
@@ -52,19 +93,55 @@ export default {
   },
   methods:{
     fetchData(query){
-      alert('fetchData')
-      alert(query)
-      console.log(query)
+      console.log('b', this.isActive)
+      this.isActive = true;
+      console.log('a', this.isActive)
+      console.log('queries', this.queries)
+      // $.forEach(this.queries, function(key, value) {
+      //   console.log(`key ${key} value ${value}`);
+      // })
+      $('.isActive').removeClass('active');
+      this.queries.forEach(function(key, value) {
+        console.log(`key ${key} value ${value}`);
+        if (key == query) {
+          $("#"+key).addClass('active');
+        }
+        // $("#"+key).removeClass('active');
+      })
+      // $('.isActive').addClass('active');
+      // alert(this.limit)
+      // alert('fetchData')
+      // alert(query)
+      // console.log(query)
+      this.limit = 6;
+      console.log(this.limit)
+      console.log(this.total)
+      // console.log('resp1', resp)
+      // console.log(this.limit)
+      let url;
+      this.limit == this.total ? url = `https://dummyjson.com/products/search?limit=${this.limit}&q=${query}&skip=${this.limit}` : url = `https://dummyjson.com/products/search?limit=${this.limit}&q=${query}`;
       // axios.get('http://127.0.0.1:8000/api/auth/user-profile', {
-      axios.get(`https://dummyjson.com/products/search?q=${query}`, {
+      // axios.get(`https://dummyjson.com/products/search?q=${query}`, {
+      // axios.get(`https://dummyjson.com/products/search?limit=${this.limit}&q=${query}`, {
+      axios.get(url, {
         method: 'GET',
         // method: 'POST',
         mode: 'no-cors',
       })
       .then(resp => {
         console.log('resp', resp)
-        console.log(Object.keys(resp.data.products[0]))
+        // console.log(Object.keys(resp.data.products[0]))
         // $('.container').html('')
+        // this.limit = resp.data.limit;
+        // alert(this.limit)
+        // alert(this.limit)
+        // this.limit = this.limit + 6;
+        // console.log(this.limit)
+        // console.log(this.total)
+        this.total = resp.data.total;
+        // this.limit > this.total ? this.limit = 6 : this.limit + 6;
+        // console.log(this.limit)
+        // console.log(this.total)
         this.items = resp;
         this.products = resp.data.products
         this.columns = Object.keys(resp.data.products[0]);
@@ -86,7 +163,8 @@ export default {
             // this.nameError.append(error.response.data.name)
             // console.log('messages', messages);
           } else if (error.response.status == 401) {
-            alert('Unauthorized')
+            alert('Unauthorized') 
+            // :class="{ 'active' : fetchData }"
             // document.getElementByClassName('error').remove()
             // document.getElementsByClassName('error').html('')
             $('.error').html('')
@@ -95,46 +173,134 @@ export default {
         }
         console.log(error);
       });
-    }
-  }
+    },
+    loadMoreData(){
+      if (this.limit > this.totalProducts.limit) return;
+        // alert(this.limit);
+        console.log('p', this.products[0].category)
+        console.log('tp', this.totalProducts)
+        // console.log('r', request)
+        // this.limit = this.limit + 6;
+        // this.limit = 6;
+        this.limit == this.total ? this.limit = 6 : this.limit = this.limit + 6;
+        console.log('', this.limit)
+        let url;
+        console.log('if', this.products[0].category == 'smartphones')
+        this.products[0].category == 'smartphones' ? url = `https://dummyjson.com/products?limit=${this.limit}` : url = `https://dummyjson.com/products/search?limit=${this.limit}&q=watch&skip=${this.limit-6}`;
+        axios
+          .get(url, {
+          // .get(`https://dummyjson.com/products/search?limit=${this.limit}&skip=${this.limit}`, {
+          // .get(`https://dummyjson.com/products/search?limit=${this.limit}&q=${query}`, {
+          // .get(`https://dummyjson.com/products/search?limit=${this.limit}&q=${query}&skip=${this.limit}`, {
+            mode: 'no-cors',
+            headers: {
+              // Authorization : `Bearer ${sessionStorage.jwtToken}` 
+            }
+          })
+          .then(response => {
+            // this.length = 6;
+            // this.limit = response.data.limit;
+            // this.limit = 6;
+            // this.products = response.data.products.slice(0, this.limit);
+            // this.columns;
+            // console.log('type', typeof(response))
+            // console.log('response', response.data.products.length)
+            // if (response.data.products.length != 0) {
+            //   this.columns = Object.keys(response.data.products[0]);
+            // }
+            this.items = response;
+            this.totalProducts = response.data;
+            this.products = response.data.products;
+            // this.columns = response.data.products ? Object.keys(response.data.products[0]) : '';
+            // return this.products.slice(0, this.length);
+            // this.products = this.totalProducts.slice(0, this.length);
+          });
+            // this.limit = this.limit + 6;
+    },
+    RemoveCart(id){
+      alert('RemoveCart')
+    },
+    addToCart(product, id){
+      // alert('addToCart');
+      // alert(id);
+      console.log(product)
+      console.log(sessionStorage.length);
+      console.log(localStorage.length);
+      console.log(Storage.length);
+      if (Storage.length == 0) {
+        sessionStorage.productId = product;
+        this.CartProducts.push(product);
+        // sessionStorage.CartProducts = this.CartProducts;
+        // sessionStorage.CartProducts = JSON.parse(this.CartProducts);
+        // student.push(newStudent );
+        // sessionStorage.setItem('CartProducts', JSON.parse(this.CartProducts));
+        // sessionStorage.setItem('CartProducts', this.CartProducts);
+        // sessionStorage.CartProducts.push(id);
+        console.log('', this.CartProducts);
+        // $('#cart-'+id).empty();
+        // $('#cart-'+id).append("<button :id="'cart-' + id" class="btn btn-primary cart" href="" @click="RemoveCart(id)">Remove Cart</button>");
+        // $('.caption').append("<button :id="'cart-' + id" class="btn btn-primary cart" href="" @click="RemoveCart(id)">Remove Cart</button>");
+        // $('#cart-'+id).html('Remove Cart');
+        $('#cart-'+id).html('Added to Cart');
+        // $('#cart-'+id).html("<button :id="'cart-' + id" class="btn btn-primary cart" href="" @click="RemoveCart(id)">Remove Cart</button>");
+      }
+        sessionStorage.setItem('CartProducts', JSON.stringify(this.CartProducts));
+      console.log(this.CartProducts);
+    },
+  },
 };
+// <div v-for="item in categories">
+//   <button @click="fetchData(item)">{{ item }}</button> 
+// </div>
+ // style="z-index: -1;" 
+
+        // $('#cart-'+id).html('Remove Cart')
+
+
 </script>
 
 <template>
   <Sidebar />
   <Breadcrumbs />
   <div>
-    <v-breadcrumbs :items="['Home', 'Products']" style="margin-bottom: 0;margin-top: 5%;"></v-breadcrumbs>
     <div>
-      <div class="sidebar" style="z-index: 0;top: 14%;left: 2%;">
+      <div class="sidebar" style="top: 14%;left: 2%;">
+      
         <a class="active" href="/products">Products</a>
-        <button href="" @click="fetchData('phone')">Smartphones</button> 
-        <button href="" @click="fetchData('Laptop')">Laptops</button> 
-        <button href="" @click="fetchData('sunglasses')">Sunglasses</button> 
-        <button href="" @click="fetchData('furniture')">Furniture</button> 
-        <button href="" @click="fetchData('home')">home-decoration</button> 
-        <button href="" @click="fetchData('motorcycle')">Motorcycle</button> 
-        <button href="" @click="fetchData('lighting')">Lighting</button> 
-        <div v-for="item in categories">
-          <button @click="fetchData(item)">{{ item }}</button> 
-        </div>
+        <button class="isActive" id="phone" href="" @click="fetchData('phone')">Smartphones</button> 
+        <button class="isActive" id="Laptop" href="" @click="fetchData('Laptop')">Laptops</button> 
+        <button class="isActive" id="sunglasses" href="" @click="fetchData('sunglasses')">Sunglasses</button> 
+        <button class="isActive" id="furniture" href="" @click="fetchData('furniture')">Furniture</button> 
+        <button class="isActive" id="home" href="" @click="fetchData('home')">home-decoration</button> 
+        <button class="isActive" id="motorcycle" href="" @click="fetchData('motorcycle')">Motorcycle</button> 
+        <button class="isActive" id="lighting" href="" @click="fetchData('lighting')">Lighting</button> 
+        <button class="isActive" id="watch" href="" @click="fetchData('watch')">Watch</button> 
+        <button class="isActive" id="bags" href="" @click="fetchData('bags')">Bags</button> 
+        <button class="isActive" id="handbags" href="" @click="fetchData('handbags')">Hand Bags</button> 
+        <button class="isActive" id="ring" href="" @click="fetchData('ring')">Rings</button> 
       </div>
     </div>
-    <div style="z-index: -1;">
-      <div class="container" style="margin-left: 50%;">
+    <div>
+      <div class="container" style="margin-left: 90%;">
         <div class="row text-center">
           <div class="col-md-4 col-sm-6" v-for="(product, index) in products" :key="index">
+            <input type="hidden" value="{{ index }}" name="{{ index }}">
             <a href="#" class="thumbnail card" style="height:95%;">
               <img :src="product.thumbnail" alt="{{ product.title }}" style="height: 50%;width: 100%;">
               <div class="caption">
                 <h6>{{ product.title }}</h6>
                 <p>Price: $ {{ product.price }}, 00</p>
-                <button class="btn btn-primary">Add to Cart</button>
+                <button :id="'cart-' + product.id" class="btn btn-primary cart" href="" @click="addToCart(product, product.id)">Add to Cart</button>
+                <button class="btn btn-primary" href="" style="margin-top: 5%;margin-bottom: 5%;">Buy Now</button>
               </div>
             </a>
           </div>
         </div>
       </div>
+    </div>
+    
+    <div v-if="limit >= 6 && limit <= total" style="margin-bottom: 10%;margin-left: 80%;">
+      <button class="btn btn-primary" href="" @click="loadMoreData">Load More</button>
     </div>
   </div>
 </template>

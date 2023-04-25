@@ -50,6 +50,7 @@ import cors from 'cors'
 import VueSidebarMenuAkahon from "vue-sidebar-menu-akahon";
 // import Vuesax from 'vuesax'
 
+import {  BreadcrumbPlugin } from "@syncfusion/ej2-vue-navigations";
 
 
 
@@ -63,6 +64,7 @@ const vuetify = createVuetify({
   directives,
 })
 
+app.use(BreadcrumbPlugin);
 
 
 // app.component('ssr-carousel')

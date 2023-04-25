@@ -11,6 +11,7 @@ import Products from '../components/Products.vue'
 import Sidebar from '../components/Sidebar.vue'
 import Breadcrumbs from '../components/Breadcrumbs.vue'
 import Category from '../components/Category.vue'
+import Cart from '../components/Cart.vue'
 
 const router = createRouter({
   mode: "history",
@@ -64,6 +65,11 @@ const router = createRouter({
       path: '/products',
       name: 'Products',
       component: Products
+    },
+    {
+      path: '/cart',
+      name: 'Cart',
+      component: Cart
     }
   ]
 })
