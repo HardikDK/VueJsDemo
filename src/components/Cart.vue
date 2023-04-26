@@ -5,14 +5,49 @@ export default {
       productId: sessionStorage.productId,
       products: this.products,
       CartProducts: sessionStorage.getItem('CartProducts'),
+      length: sessionStorage.getItem('CartProductsLength'),
     };
-    alert(typeof(this.CartProducts));
+    // alert(typeof(this.CartProducts));
   },
   mounted () {
     // alert(typeof(this.CartProducts));
     console.log('CartProducts', JSON.parse(this.CartProducts));
     this.products = JSON.parse(this.CartProducts);
+    // alert(this.products.length);
   },
+  methods:{
+    RemoveCart(product, id){
+      alert(id)
+      console.log(product)
+      // let products = JSON.parse(sessionStorage.getItem('CartProducts')).filter((el) => el.id !== id);
+      let products = this.products.filter((el) => el.id !== id);
+      this.products = products;
+      sessionStorage.CartProducts = JSON.stringify(this.products);
+      sessionStorage.CartProductsLength = this.products.length;
+      // this.products = this.products.filter((el) => el.id !== id);
+      // this.products = JSON.parse(sessionStorage.setItem('CartProducts')).filter((el) => el.id !== id);
+      // this.products = JSON.parse(sessionStorage.CartProducts).filter((el) => el.id !== id);
+      // this.length = this.products.length;
+      // sessionStorage.CartProductsLength = this.products.length;
+      // this.length--;
+      // sessionStorage.getItem('CartProductsLength')--;
+      console.log(this.products);
+      // sessionStorage.getItem('CartProducts')
+      // this.products.splice(id, product)
+      // console.log(this.products)
+      // console.log(this.products.splice(id, product))
+      // // JSON.parse(this.CartProducts).pop(product)
+      // // this.products.pop(product)
+      // this.products.splice(length, product);
+      // // sessionStorage.CartProductsLength = '';
+      // // sessionStorage.CartProductsLength -= 1;
+      // sessionStorage.CartProductsLength = sessionStorage.CartProductsLength >= 0 ? sessionStorage.CartProductsLength - 1 : '';
+      // // this.products = JSON.parse(this.CartProducts);
+      // // sessionStorage.clear();
+      // // window.location = '/products';
+      // window.location.reload();
+    },
+  }
 };
 </script>
 
@@ -27,7 +62,7 @@ export default {
               <div class="caption">
                 <h6>{{ product.title }}</h6>
                 <p>Price: $ {{ product.price }}, 00</p>
-                <button :id="'cart-' + product.id" class="btn btn-primary cart" href="" @click="addToCart(product, product.id)">Added to Cart</button>
+                <button :id="'cart-' + product.id" class="btn btn-primary cart" href="" @click="RemoveCart(product, product.id)">Remove from Cart</button>
                 <button class="btn btn-primary" href="" style="margin-top: 5%;margin-bottom: 5%;">Buy Now</button>
               </div>
             </a>

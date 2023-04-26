@@ -32,6 +32,7 @@ import router from '../router'
 // })
 // console.log(window.auth_user)
 let name;
+let length;
 export default {
   computed: {
     userType (){
@@ -43,32 +44,40 @@ export default {
       // return window.sessionStorage.getItem('name')
     },
     // loggedin: true,
+  },
     data() {
       return {
         // userLoggedIn: false
         userLoggedIn: name ? true : false,
         products: this.products,
-        length: this.length,
+        // length: this.length,
+        limit: '',
         CartProducts: sessionStorage.getItem('CartProducts'),        
+        // length: sessionStorage.getItem('CartProductsLength'),
+        // length: '',
       };
     },
     mounted () {
-      console.log('CartProducts', JSON.parse(this.CartProducts));
-      this.products = JSON.parse(this.CartProducts);
-      this.length = this.products.length;
-      alert(this.length);
-      console.log(this.length);
+      // return this.length;
+      setInterval(() => {
+        this.length = sessionStorage.getItem('CartProductsLength');
+        // this.length = sessionStorage.getItem('CartProducts').length;
+        // this.products = JSON.parse(this.CartProducts);
+        // this.length = JSON.parse(sessionStorage.getItem('CartProducts')).length;
+        // this.length = JSON.parse(sessionStorage.getItem('CartProducts')).length;
+        return this.length;
+        // return this.length;
+      }, 1000);
     },
-  },
   methods: {
     logout() {
-      // alert('l')
-      sessionStorage.clear()
-      localStorage.clear()
-      window.location = '/'
+      // alert('l');
+      sessionStorage.clear();
+      localStorage.clear();
+      window.location = '/';
     },
     count() {
-      this.length = this.products.length;
+      this.limit = '';
     }
   }
 }

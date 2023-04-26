@@ -6,8 +6,13 @@ import ProductsGrid from 'vue-products-grid'
 // let items = new Array();
 export default {
   data() {
-  console.log('name', sessionStorage.name)
-  console.log('email', sessionStorage.email)
+    console.log('name', sessionStorage.name)
+    console.log('email', sessionStorage.email)
+    // sessionStorage.clear();
+    // setTimeout(() => {
+    //   return window.location.reload();
+    // }, 100);
+    // window.location.reload();
     return {
       items: this.items,
       totalProducts: this.totalProducts,
@@ -223,11 +228,11 @@ export default {
     addToCart(product, id){
       // alert('addToCart');
       // alert(id);
-      console.log(product)
-      console.log(sessionStorage.length);
-      console.log(localStorage.length);
-      console.log(Storage.length);
-      if (Storage.length == 0) {
+      // console.log(product)
+      // console.log(sessionStorage.length);
+      // console.log(localStorage.length);
+      // console.log(Storage.length);
+      // if (Storage.length == 0) {
         sessionStorage.productId = product;
         this.CartProducts.push(product);
         // sessionStorage.CartProducts = this.CartProducts;
@@ -236,16 +241,17 @@ export default {
         // sessionStorage.setItem('CartProducts', JSON.parse(this.CartProducts));
         // sessionStorage.setItem('CartProducts', this.CartProducts);
         // sessionStorage.CartProducts.push(id);
-        console.log('', this.CartProducts);
+        console.log('', this.CartProducts.length);
         // $('#cart-'+id).empty();
         // $('#cart-'+id).append("<button :id="'cart-' + id" class="btn btn-primary cart" href="" @click="RemoveCart(id)">Remove Cart</button>");
         // $('.caption').append("<button :id="'cart-' + id" class="btn btn-primary cart" href="" @click="RemoveCart(id)">Remove Cart</button>");
         // $('#cart-'+id).html('Remove Cart');
         $('#cart-'+id).html('Added to Cart');
         // $('#cart-'+id).html("<button :id="'cart-' + id" class="btn btn-primary cart" href="" @click="RemoveCart(id)">Remove Cart</button>");
-      }
         sessionStorage.setItem('CartProducts', JSON.stringify(this.CartProducts));
-      console.log(this.CartProducts);
+        sessionStorage.CartProductsLength = this.CartProducts.length;
+        console.log(this.CartProducts);
+      // }
     },
   },
 };
