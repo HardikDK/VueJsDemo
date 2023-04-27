@@ -6,11 +6,13 @@ export default {
   data: function () {
     return {
       passResetRequest: {
-        name: '',
-        email: '',
+        // name: '',
+        // email: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
       },
+      password: '',
+      password_confirmation: '',
       errors:[],
     }
   },
@@ -94,6 +96,8 @@ export default {
           console.log('p0', passwordError[0])
           console.log('p1', passwordError[1])
           // alert(passwordError)
+          $('#password').val('');
+          $('#password_confirmation').val('');
           $('.error').html('')
           document.getElementById('nameError').append(nameError)
           document.getElementById('emailError').append(emailError)
@@ -113,6 +117,8 @@ export default {
     }
   }
 };
+//              <a href="#">Login</a>
+
 </script>
 
 <template>
@@ -145,7 +151,7 @@ export default {
               <span class="error" id="password_confirmationError"></span>
             </div>
 	   			  <div class="d-flex flex-row align-items-center justify-content-between">
-	      			<a href="#">Login</a>
+              <router-link to="/login">Login</router-link>
               <button class="btn btn-primary mt-3">Create Account</button>
 	          </div>
 		      </form>

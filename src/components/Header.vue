@@ -32,7 +32,7 @@ import router from '../router'
 // })
 // console.log(window.auth_user)
 let name;
-let length;
+let length = 0;
 export default {
   computed: {
     userType (){
@@ -59,15 +59,20 @@ export default {
     },
     mounted () {
       // return this.length;
+      // return this.length = sessionStorage.getItem('CartProductsLength');
       setInterval(() => {
         this.length = sessionStorage.getItem('CartProductsLength');
         // this.length = sessionStorage.getItem('CartProducts').length;
         // this.products = JSON.parse(this.CartProducts);
         // this.length = JSON.parse(sessionStorage.getItem('CartProducts')).length;
         // this.length = JSON.parse(sessionStorage.getItem('CartProducts')).length;
+        // $("#cart").append(this.length);
+        $("#length").empty();
+        $("#length").append(this.length);
+        // $(".cart").append(this.length);
         return this.length;
         // return this.length;
-      }, 1000);
+      }, 100);
     },
   methods: {
     logout() {
@@ -81,25 +86,24 @@ export default {
     }
   }
 }
+
 </script>
 
 <template>
-  <header class="header" style="z-index: 2;">
+  <header class="header" style="z-index: 2;right: 0%;">
 	<img alt="Vue logo" class="logo" src="../assets/karavya.png" width="50" height="50" />
     <div class="wrapper">
   	  <router-link to="/">Home</router-link>   
       <router-link to="/products">Products</router-link> 
   	  <router-link to="/about">About</router-link> 
   	  <router-link to="/non-existent-path">Link</router-link>
-      <router-link to="/cart">
+      <router-link to="/cart" id="cart" class="cart">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-heart-fill" viewBox="0 0 16 16">
           <path d="M11.5 4v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5ZM8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1Zm0 6.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/>
-        </svg>{{length}}
+        </svg><p id="length"></p>
       </router-link>
     </div>
-    <a :title="userType">Profile</a> 
     <div class="wrapper" v-if="userType">
-      <p>{{userType}}</p> 
       <router-link to="/profile" :title="userType">Profile</router-link>
       <button @click="logout" class="btn link logout">Logout</button>
     </div>

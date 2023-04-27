@@ -6,157 +6,45 @@ import Footer from './Footer.vue'
 import Register from './Register.vue'
 import Sidebar from './Sidebar.vue'
 import router from '../router'
-// import Crumbs from './Crumbs.vue'
-// const currentTab = ref('Register')
-// export default {
-// export  {
-//   data() {
-//     return {
-//       productId: sessionStorage.productId,
-//       products: this.products,
-//       CartProducts: sessionStorage.getItem('CartProducts'),
-//       length: sessionStorage.getItem('CartProductsLength'),
-//       links: [
-//         {
-//           title: 'Home',
-//           disabled: false,
-//           href: '/',
-//         },
-//         {
-//           // title: window.location.pathname,
-//           title: window.location.pathname.split('/')[1],
-//           disabled: true,
-//           href: window.location.href.split('/'),
-//         },
-//         // {
-//         //   title: 'Link 2',
-//         //   disabled: true,
-//         //   href: 'breadcrumbs_link_2',
-//         // },  
-//       ]
 
-//     };
-//     // alert(typeof(this.CartProducts));
-//   },
-//   mounted () {
-//     // alert(typeof(this.CartProducts));
-//     console.log('CartProducts', JSON.parse(this.CartProducts));
-//     this.products = JSON.parse(this.CartProducts);
-//     // alert(this.products.length);
-//   },
-//   methods:{
-//     RemoveCart(product, id){
-//       // // alert('RemoveCart')
-//       // // JSON.parse(this.CartProducts).pop(product)
-//       // // this.products.pop(product)
-//       // this.products.splice(length, product);
-//       // // sessionStorage.CartProductsLength = '';
-//       // // sessionStorage.CartProductsLength -= 1;
-//       // sessionStorage.CartProductsLength = sessionStorage.CartProductsLength >= 0 ? sessionStorage.CartProductsLength - 1 : '';
-//       // // this.products = JSON.parse(this.CartProducts);
-//       // // sessionStorage.clear();
-//       // // window.location = '/products';
-//       // window.location.reload();
-//     },
-//   }
-// };
+//  style="margin-bottom: 0;margin-top: 5%;"
 
-// const tabs = {
-//   Register
-// }
-// const routes = {
-//   // '/': Home,
-//   // '/about': About,
-//   '/register': Register
-// }
-// console.log(router)
-console.log(router.currentRoute)
-// console.log(window)
-console.log(location)
-// console.log(window.location.reload)
-// alert(window)
-// alert(window.location.pathname)
-// alert(window.location.href)
+//  {{idx}}{{Object.keys(this.$route.matched).length-1}} 
 
-// const currentPath = ref(window.location.hash)
+// :items="links" 
 
-// window.addEventListener('hashchange', () => {
-//   currentPath.value = window.location.hash
-// })
-
-// element () {
-//   return this.href ? 'a' : 'button';
-// }
-// {{$route.path}}
-// {{ item.title }}
+//  style="margin-bottom: 100%;"
 
 
-
-const currentView = computed(() => {
-// const currentView = mounted(() => {
-  // return routes[currentPath.value.slice(1) || '/'] || NotFound
-  // return links;
-});
-
-console.log(window.history.state.current)
-console.log(window.history.state)
-console.log(window.history)
-// alert(router.currentRoute._value.fullPath)
-// alert(router.currentRoute._rawValue.path)
-// alert(router.currentRoute._value.name)
-// alert(router.currentRoute._rawValue.name)
-// alert(typeof(router.currentRoute));
-console.log(router.currentRoute);
-// console.log(JSON.parse(router.currentRoute));
-// const currentRouteURL = JSON.parse(router.currentRoute);
-// console.log(currentRouteURL)
-// alert(typeof(currentRouteURL))
-const links = [
-  {
-    title: 'Home',
-    disabled: false,
-    href: '/',
-  },
-  // {
-  //   // title: window.location.pathname,
-  //   // title: window.location.pathname.split('/')[1],
-  //   // title: location.pathname.split('/')[1],
-  //   // title: router.currentRoute._value.fullPath.split('/')[1],
-  //   // title: router.currentRoute._rawValue.path.split('/')[1],
-  //   // title: router.name,
-  //   title: window.history.state.current.split('/')[1],
-  //   disabled: true,
-  //   href: window.location.href.split('/'),
-  // },
-  // {
-  //   title: 'Link 2',
-  //   disabled: true,
-  //   href: 'breadcrumbs_link_2',
-  // },  
-]
-
- // style="margin-bottom: 0;margin-top: 5%;"
 </script>
 
 <template>
   <Header />    
-  <main style="z-index: 1;">
-    <v-breadcrumbs :items="links" style="margin-bottom: 0;margin-top: 5%;">
-      <span v-for="(matched, idx) in this.$route.matched"
+  <div style="margin-bottom: 100%;bottem:75%;margin-top: 5%;right: 2%;">
+    <v-breadcrumbs style="position:fixed;">
+      <template v-for="(matched, idx) in this.$route.matched"
         :key="idx">
-        <a 
-        :href="matched.path">
         {{ matched.name }}
-        </a>{{idx}}{{Object.keys(this.$route.matched).length}}{{Object.keys(this.$route.matched).length-1}}
         <span v-if="idx != Object.keys(this.$route.matched).length - 1"> / </span>
-        </span>
+      </template>
     </v-breadcrumbs>
+  </div>
+  <main style="z-index: 1;">
     <router-view/>
   </main>
   <Footer />
 </template>
 
 <style scoped>
+
+
+.breadcrumb {
+    position: fixed;
+    top: 40px;
+    width: 100%;
+}
+
+
 header {
   line-height: 1.5;
 }

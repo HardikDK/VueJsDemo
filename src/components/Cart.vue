@@ -2,7 +2,7 @@
 export default {
   data() {
     return {
-      productId: sessionStorage.productId,
+      productIds: sessionStorage.productIds,
       products: this.products,
       CartProducts: sessionStorage.getItem('CartProducts'),
       length: sessionStorage.getItem('CartProductsLength'),
@@ -11,19 +11,29 @@ export default {
   },
   mounted () {
     // alert(typeof(this.CartProducts));
-    console.log('CartProducts', JSON.parse(this.CartProducts));
+    // console.log('CartProducts', JSON.parse(this.CartProducts));
     this.products = JSON.parse(this.CartProducts);
+    this.productIds = JSON.parse(this.productIds);
     // alert(this.products.length);
   },
   methods:{
     RemoveCart(product, id){
-      alert(id)
-      console.log(product)
+      // alert(id)
+      // console.log(product)
       // let products = JSON.parse(sessionStorage.getItem('CartProducts')).filter((el) => el.id !== id);
       let products = this.products.filter((el) => el.id !== id);
       this.products = products;
       sessionStorage.CartProducts = JSON.stringify(this.products);
+      
       sessionStorage.CartProductsLength = this.products.length;
+      
+      let ids = this.productIds.filter((el) => el !== id);
+      this.productIds = ids;
+      sessionStorage.productIds = JSON.stringify(this.productIds);
+      // console.log('ids', ids);
+      // console.log('this.productIds', this.productIds);
+      // console.log('sessionStorage.productIds', sessionStorage.productIds);
+       // sessionStorage.removeItem(id); 
       // this.products = this.products.filter((el) => el.id !== id);
       // this.products = JSON.parse(sessionStorage.setItem('CartProducts')).filter((el) => el.id !== id);
       // this.products = JSON.parse(sessionStorage.CartProducts).filter((el) => el.id !== id);
@@ -31,7 +41,7 @@ export default {
       // sessionStorage.CartProductsLength = this.products.length;
       // this.length--;
       // sessionStorage.getItem('CartProductsLength')--;
-      console.log(this.products);
+      // console.log(this.products);
       // sessionStorage.getItem('CartProducts')
       // this.products.splice(id, product)
       // console.log(this.products)
@@ -53,7 +63,7 @@ export default {
 
 <template>
     <div>
-      <div class="container" style="margin-left: 90%;">
+      <div class="container">
         <div class="row text-center">
           <div class="col-md-4 col-sm-6" v-for="(product, index) in products" :key="index">
             <input type="hidden" value="{{ index }}" name="{{ index }}">

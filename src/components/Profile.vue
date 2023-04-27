@@ -108,9 +108,9 @@ export default {
 </script>
 
 <template>
-	<div class="container align-items-center center">
+	<div class="container align-items-center center" style="margin-left: 80%;">
 		<div class="row justify-content-center">
-			<div class="card">
+			<div class="card" style="margin-right: 100%;">
 				<h2 class="card-title text-center">
 					Profile
 				</h2>

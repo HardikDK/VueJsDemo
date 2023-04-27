@@ -53,6 +53,9 @@ export default {
             console.log('error response name', error.response.data);
             // let messages = JSON.parse(error.response.data)
             // errors = JSON.parse(error.response.data)
+            // document.getElementById('password').text('');
+            $('#password').val('');
+            // alert()
             let emailError = error.response.data.email ? error.response.data.email : ''
             let passwordError = error.response.data.password ? error.response.data.password : ''
             $('.error').html('')
@@ -73,12 +76,14 @@ export default {
     }
   }
 };
+              // <a href="#">Create Account</a>
+
 </script>
 
 <template>
-	<div class="container align-items-center center">
+	<div class="container align-items-center center" style="margin-left: 80%;">
 		<div class="row justify-content-center">
-			<div class="card">
+			<div class="card" style="margin-right: 100%;">
 				<h2 class="card-title text-center">
 					Login
 				</h2>
@@ -96,7 +101,7 @@ export default {
               <span class="error" id="passwordError"></span>
 	   			  </div>
 	   			  <div class="d-flex flex-row align-items-center justify-content-between">
-              <a href="#">Create Account</a>
+              <router-link to="/register">Create Account</router-link>
 	      			<button class="btn btn-primary mt-3">Login</button>
 	          </div>
 		      </form>

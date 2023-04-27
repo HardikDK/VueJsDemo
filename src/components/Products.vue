@@ -19,13 +19,19 @@ export default {
       total: this.total,
       // totalProductsLimit: this.totalProductsLimit,
       products: this.products,
+      // products: [],
       columns: this.columns,
       length: this.length,
       limit: this.limit,
       isActive: false,
       queries: ['phone', 'Laptop', 'sunglasses', 'furniture', 'home', 'motorcycle', 'lighting', 'watch', 'bags', 'handbags', 'ring'],
-      productId: this.productId,
+      productIds: [],
+      // cartProductId: '',
+      // cartProductId: this.cartProductId,
+      // cartProductIds: [],
       CartProducts: [],
+      // buttonText: 'Add to Cart',
+      // buttonText: '',
       links: [
         {
           title: 'Home',
@@ -95,6 +101,54 @@ export default {
         console.log('categories', this.categories);
         // this.category = Object.keys(resp.data.products[0]);
       })
+      // alert(sessionStorage.productId)
+      // alert(typeof(this.products))
+      // console.log(this.products)
+      // this.products.forEach(function(key, value) {
+      //   console.log(`key ${key} value ${value}`)
+      // })
+      // $.forEach(this.products, function(key, value) {
+      //   console.log(`key ${key} value ${value}`)
+      // })
+
+    let cartProductIds = [];
+    console.log('sessionStorage', JSON.parse(sessionStorage.productIds));
+    let productIds = JSON.parse(sessionStorage.productIds);
+    productIds.forEach(function(key, value) {
+      console.log(`key ${key} value ${value}`)
+      cartProductIds.push(key)
+      // cartProductId = key;
+      if ($('#cart-'+key)) {
+        console.log('elem', $('#cart-'+key))
+        $('#cart-'+key).empty();
+        $('#cart-'+key).append('Added to Cart');
+      // alert(this.cartProductId);
+      }
+    })
+    // alert(cartProductIds);
+    this.cartProductIds = cartProductIds;
+    alert(this.cartProductIds);
+    let index = cartProductIds;
+    // this.cartProductId = cartProductId;
+  //   // this.buttonText = sessionStorage.productId ? 'Added to Cart' : 'Add to Cart';
+  //   if ($('#cart-'+sessionStorage.productId)) {
+  //     // alert('if')
+  //     // alert(this.buttonText)
+  //     // this.buttonText = 'Added to Cart'
+  //     // $('#cart-'+sessionStorage.productId).html('Added to Cart');
+  //     $('#cart-'+sessionStorage.productId).empty();
+  //     $('#cart-'+sessionStorage.productId).append('Added to Cart');
+  //   } else {
+  //     // alert('else')
+  //     // this.buttonText = 'Add to Cart'
+  //     // alert(this.buttonText)
+  //     // $('#cart-'+sessionStorage.productId).html('Add to Cart');
+  //     $('#cart-'+sessionStorage.productId).empty();
+  //     $('#cart-'+sessionStorage.productId).append('Add to Cart');
+  //   }
+  // // alert(this.productId)
+    // this.productId = sessionStorage.productId;
+  // alert(sessionStorage.productId)
   },
   methods:{
     fetchData(query){
@@ -226,32 +280,15 @@ export default {
       alert('RemoveCart')
     },
     addToCart(product, id){
-      // alert('addToCart');
-      // alert(id);
-      // console.log(product)
-      // console.log(sessionStorage.length);
-      // console.log(localStorage.length);
-      // console.log(Storage.length);
-      // if (Storage.length == 0) {
-        sessionStorage.productId = product;
-        this.CartProducts.push(product);
-        // sessionStorage.CartProducts = this.CartProducts;
-        // sessionStorage.CartProducts = JSON.parse(this.CartProducts);
-        // student.push(newStudent );
-        // sessionStorage.setItem('CartProducts', JSON.parse(this.CartProducts));
-        // sessionStorage.setItem('CartProducts', this.CartProducts);
-        // sessionStorage.CartProducts.push(id);
-        console.log('', this.CartProducts.length);
-        // $('#cart-'+id).empty();
-        // $('#cart-'+id).append("<button :id="'cart-' + id" class="btn btn-primary cart" href="" @click="RemoveCart(id)">Remove Cart</button>");
-        // $('.caption').append("<button :id="'cart-' + id" class="btn btn-primary cart" href="" @click="RemoveCart(id)">Remove Cart</button>");
-        // $('#cart-'+id).html('Remove Cart');
-        $('#cart-'+id).html('Added to Cart');
-        // $('#cart-'+id).html("<button :id="'cart-' + id" class="btn btn-primary cart" href="" @click="RemoveCart(id)">Remove Cart</button>");
-        sessionStorage.setItem('CartProducts', JSON.stringify(this.CartProducts));
-        sessionStorage.CartProductsLength = this.CartProducts.length;
-        console.log(this.CartProducts);
-      // }
+      // sessionStorage.productId = this.productIds;
+      this.productIds.push(id);
+      this.CartProducts.push(product);
+      console.log('', this.CartProducts.length);
+      $('#cart-'+id).html('Added to Cart');
+      sessionStorage.setItem('CartProducts', JSON.stringify(this.CartProducts));
+      sessionStorage.setItem('productIds', JSON.stringify(this.productIds));
+      sessionStorage.CartProductsLength = this.CartProducts.length;
+      console.log(this.CartProducts);
     },
   },
 };
@@ -261,7 +298,7 @@ export default {
  // style="z-index: -1;" 
 
         // $('#cart-'+id).html('Remove Cart')
-
+//   style="margin-left: 90%;"
 
 </script>
 
@@ -270,7 +307,7 @@ export default {
   <Breadcrumbs />
   <div>
     <div>
-      <div class="sidebar" style="top: 14%;left: 2%;">
+      <div class="sidebar" style="top: 15%;left: 0%;margin-top:1%;">
       
         <a class="active" href="/products">Products</a>
         <button class="isActive" id="phone" href="" @click="fetchData('phone')">Smartphones</button> 
@@ -287,17 +324,18 @@ export default {
       </div>
     </div>
     <div>
-      <div class="container" style="margin-left: 90%;">
+      <div class="container">
         <div class="row text-center">
           <div class="col-md-4 col-sm-6" v-for="(product, index) in products" :key="index">
-            <input type="hidden" value="{{ index }}" name="{{ index }}">
+            <input type="hidden" :value="index" name="index">
             <a href="#" class="thumbnail card" style="height:95%;">
               <img :src="product.thumbnail" alt="{{ product.title }}" style="height: 50%;width: 100%;">
               <div class="caption">
                 <h6>{{ product.title }}</h6>
-                <p>Price: $ {{ product.price }}, 00</p>
-                <button :id="'cart-' + product.id" class="btn btn-primary cart" href="" @click="addToCart(product, product.id)">Add to Cart</button>
-                <button class="btn btn-primary" href="" style="margin-top: 5%;margin-bottom: 5%;">Buy Now</button>
+                <p>Price: $ {{ product.price }}, 00</p>{{cartProductIds}}
+                <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart" :title="productId" @click="addToCart(product, product.id)" v-if="product.id == cartProductId">Added to Cart</button>
+                <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart" :title="productId" @click="addToCart(product, product.id)" v-else>Add to Cart</button>
+                <button class="btn btn-primary" :href="product.id" style="margin-top: 5%;margin-bottom: 5%;">Buy Now</button>
               </div>
             </a>
           </div>
