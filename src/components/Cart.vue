@@ -6,20 +6,28 @@ export default {
       products: this.products,
       CartProducts: sessionStorage.getItem('CartProducts'),
       length: sessionStorage.getItem('CartProductsLength'),
+      isLength: false,
+      // isLength: '',
     };
-    // alert(typeof(this.CartProducts));
   },
   mounted () {
     // alert(typeof(this.CartProducts));
     // console.log('CartProducts', JSON.parse(this.CartProducts));
     this.products = JSON.parse(this.CartProducts);
+    // alert(this.productIds);
     this.productIds = JSON.parse(this.productIds);
-    // alert(this.products.length);
+    
+    this.isLength = this.length == 1 ? true : false;
+    // let cartProductsLength = this.length;
+    // setInterval(function() {
+    //   if (cartProductsLength == 1) {
+    //     $('.style').css('width:40%');
+    //     // $('#style').css('width:40%');
+    //   }
+    // }, 100)
   },
   methods:{
     RemoveCart(product, id){
-      // alert(id)
-      // console.log(product)
       // let products = JSON.parse(sessionStorage.getItem('CartProducts')).filter((el) => el.id !== id);
       let products = this.products.filter((el) => el.id !== id);
       this.products = products;
@@ -30,9 +38,6 @@ export default {
       let ids = this.productIds.filter((el) => el !== id);
       this.productIds = ids;
       sessionStorage.productIds = JSON.stringify(this.productIds);
-      // console.log('ids', ids);
-      // console.log('this.productIds', this.productIds);
-      // console.log('sessionStorage.productIds', sessionStorage.productIds);
        // sessionStorage.removeItem(id); 
       // this.products = this.products.filter((el) => el.id !== id);
       // this.products = JSON.parse(sessionStorage.setItem('CartProducts')).filter((el) => el.id !== id);
@@ -41,11 +46,8 @@ export default {
       // sessionStorage.CartProductsLength = this.products.length;
       // this.length--;
       // sessionStorage.getItem('CartProductsLength')--;
-      // console.log(this.products);
       // sessionStorage.getItem('CartProducts')
       // this.products.splice(id, product)
-      // console.log(this.products)
-      // console.log(this.products.splice(id, product))
       // // JSON.parse(this.CartProducts).pop(product)
       // // this.products.pop(product)
       // this.products.splice(length, product);
@@ -59,14 +61,15 @@ export default {
     },
   }
 };
+ // style="margin-top: 12%;"
 </script>
 
 <template>
     <div>
       <div class="container">
         <div class="row text-center">
-          <div class="col-md-4 col-sm-6" v-for="(product, index) in products" :key="index">
-            <input type="hidden" value="{{ index }}" name="{{ index }}">
+          <div class="col-md-4 col-sm-6 style" id="style" v-for="(product, index) in products" :key="index" :style="[ isLength ? {'width':'40%'} : '']">
+            <input type="hidden" :value="product.id" name="{{ index }}">
             <a href="#" class="thumbnail card" style="height:95%;">
               <img :src="product.thumbnail" alt="{{ product.title }}" style="height: 50%;width: 100%;">
               <div class="caption">

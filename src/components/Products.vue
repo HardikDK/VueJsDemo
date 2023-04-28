@@ -6,8 +6,6 @@ import ProductsGrid from 'vue-products-grid'
 // let items = new Array();
 export default {
   data() {
-    console.log('name', sessionStorage.name)
-    console.log('email', sessionStorage.email)
     // sessionStorage.clear();
     // setTimeout(() => {
     //   return window.location.reload();
@@ -67,13 +65,7 @@ export default {
         // this.length = 6;
         // this.limit = response.data.limit;
         this.limit = 6;
-        console.log('l', this.length);
-        // alert(response.data.limit)
-        // console.log('s', this.products.slice(0, this.length));
-        // console.log('s', response.data.products.slice(0, this.length));
         // this.products = response.data.products.slice(0, this.limit);
-        console.log('response', response)
-        console.log(Object.keys(response.data.products[0]))
         this.items = response;
         this.columns = Object.keys(response.data.products[0]);
         this.totalProducts = response.data;
@@ -82,8 +74,6 @@ export default {
         this.products = response.data.products;
         // return this.products.slice(0, this.length);
         // this.products = this.totalProducts.slice(0, this.length);
-        // console.log('t', this.totalProducts);
-        // console.log('t', this.products);
       });
     axios
       // .get('https://dummyjson.com/products/category/smartphones',{
@@ -94,89 +84,50 @@ export default {
         }
       })
       .then(resp => {
-        console.log('resp', resp)
-        // console.log(Object.keys(resp.data.products[0]))
         // this.list = resp;
         this.categories = resp.data
-        console.log('categories', this.categories);
         // this.category = Object.keys(resp.data.products[0]);
       })
-      // alert(sessionStorage.productId)
-      // alert(typeof(this.products))
-      // console.log(this.products)
-      // this.products.forEach(function(key, value) {
-      //   console.log(`key ${key} value ${value}`)
-      // })
-      // $.forEach(this.products, function(key, value) {
-      //   console.log(`key ${key} value ${value}`)
-      // })
 
     let cartProductIds = [];
-    console.log('sessionStorage', JSON.parse(sessionStorage.productIds));
     let productIds = JSON.parse(sessionStorage.productIds);
     productIds.forEach(function(key, value) {
-      console.log(`key ${key} value ${value}`)
       cartProductIds.push(key)
       // cartProductId = key;
       if ($('#cart-'+key)) {
-        console.log('elem', $('#cart-'+key))
         $('#cart-'+key).empty();
         $('#cart-'+key).append('Added to Cart');
-      // alert(this.cartProductId);
       }
     })
-    // alert(cartProductIds);
     this.cartProductIds = cartProductIds;
-    alert(this.cartProductIds);
     let index = cartProductIds;
     // this.cartProductId = cartProductId;
   //   // this.buttonText = sessionStorage.productId ? 'Added to Cart' : 'Add to Cart';
   //   if ($('#cart-'+sessionStorage.productId)) {
-  //     // alert('if')
-  //     // alert(this.buttonText)
   //     // this.buttonText = 'Added to Cart'
   //     // $('#cart-'+sessionStorage.productId).html('Added to Cart');
   //     $('#cart-'+sessionStorage.productId).empty();
   //     $('#cart-'+sessionStorage.productId).append('Added to Cart');
   //   } else {
-  //     // alert('else')
   //     // this.buttonText = 'Add to Cart'
-  //     // alert(this.buttonText)
   //     // $('#cart-'+sessionStorage.productId).html('Add to Cart');
   //     $('#cart-'+sessionStorage.productId).empty();
   //     $('#cart-'+sessionStorage.productId).append('Add to Cart');
   //   }
-  // // alert(this.productId)
     // this.productId = sessionStorage.productId;
-  // alert(sessionStorage.productId)
   },
   methods:{
     fetchData(query){
-      console.log('b', this.isActive)
       this.isActive = true;
-      console.log('a', this.isActive)
-      console.log('queries', this.queries)
-      // $.forEach(this.queries, function(key, value) {
-      //   console.log(`key ${key} value ${value}`);
-      // })
       $('.isActive').removeClass('active');
       this.queries.forEach(function(key, value) {
-        console.log(`key ${key} value ${value}`);
         if (key == query) {
           $("#"+key).addClass('active');
         }
         // $("#"+key).removeClass('active');
       })
       // $('.isActive').addClass('active');
-      // alert(this.limit)
-      // alert('fetchData')
-      // alert(query)
-      // console.log(query)
       this.limit = 6;
-      console.log(this.limit)
-      console.log(this.total)
-      // console.log('resp1', resp)
-      // console.log(this.limit)
       let url;
       this.limit == this.total ? url = `https://dummyjson.com/products/search?limit=${this.limit}&q=${query}&skip=${this.limit}` : url = `https://dummyjson.com/products/search?limit=${this.limit}&q=${query}`;
       // axios.get('http://127.0.0.1:8000/api/auth/user-profile', {
@@ -188,30 +139,19 @@ export default {
         mode: 'no-cors',
       })
       .then(resp => {
-        console.log('resp', resp)
-        // console.log(Object.keys(resp.data.products[0]))
         // $('.container').html('')
         // this.limit = resp.data.limit;
         // alert(this.limit)
-        // alert(this.limit)
         // this.limit = this.limit + 6;
-        // console.log(this.limit)
-        // console.log(this.total)
         this.total = resp.data.total;
         // this.limit > this.total ? this.limit = 6 : this.limit + 6;
-        // console.log(this.limit)
-        // console.log(this.total)
         this.items = resp;
         this.products = resp.data.products
         this.columns = Object.keys(resp.data.products[0]);
       })
       .catch(error => {
-        console.log('erc', error.code);
-        console.log('error response', error.response);
         if (error.response != undefined) {
           if (error.response.status == 422) {
-            // alert('t')
-            console.log('error response name', error.response.data);
             // let messages = JSON.parse(error.response.data)
             // errors = JSON.parse(error.response.data)
             let nameError = error.response.data.name ? error.response.data.name : ''
@@ -220,9 +160,7 @@ export default {
             document.getElementById('nameError').append(nameError)
             document.getElementById('emailError').append(emailError)
             // this.nameError.append(error.response.data.name)
-            // console.log('messages', messages);
           } else if (error.response.status == 401) {
-            alert('Unauthorized') 
             // :class="{ 'active' : fetchData }"
             // document.getElementByClassName('error').remove()
             // document.getElementsByClassName('error').html('')
@@ -230,21 +168,14 @@ export default {
             document.getElementById('allErrors').append(error.response.data.error)
           }
         }
-        console.log(error);
       });
     },
     loadMoreData(){
       if (this.limit > this.totalProducts.limit) return;
-        // alert(this.limit);
-        console.log('p', this.products[0].category)
-        console.log('tp', this.totalProducts)
-        // console.log('r', request)
         // this.limit = this.limit + 6;
         // this.limit = 6;
         this.limit == this.total ? this.limit = 6 : this.limit = this.limit + 6;
-        console.log('', this.limit)
         let url;
-        console.log('if', this.products[0].category == 'smartphones')
         this.products[0].category == 'smartphones' ? url = `https://dummyjson.com/products?limit=${this.limit}` : url = `https://dummyjson.com/products/search?limit=${this.limit}&q=watch&skip=${this.limit-6}`;
         axios
           .get(url, {
@@ -262,11 +193,6 @@ export default {
             // this.limit = 6;
             // this.products = response.data.products.slice(0, this.limit);
             // this.columns;
-            // console.log('type', typeof(response))
-            // console.log('response', response.data.products.length)
-            // if (response.data.products.length != 0) {
-            //   this.columns = Object.keys(response.data.products[0]);
-            // }
             this.items = response;
             this.totalProducts = response.data;
             this.products = response.data.products;
@@ -276,19 +202,72 @@ export default {
           });
             // this.limit = this.limit + 6;
     },
-    RemoveCart(id){
-      alert('RemoveCart')
+    RemoveCart(product, id){
+      let cartProducts = JSON.parse(sessionStorage.CartProducts);
+      let products = cartProducts.filter((el) => el.id !== id);
+      // this.products = products;
+      sessionStorage.CartProducts = JSON.stringify(products);
+      
+      sessionStorage.CartProductsLength = products.length;
+      
+
+      let cartProductsIds = JSON.parse(sessionStorage.productIds);
+      let ids = cartProductsIds.filter((el) => el !== id);
+      // this.productIds = ids;
+      sessionStorage.productIds = JSON.stringify(ids);
+      // $('#cart-'+id).html('Add to Cart');
+      $('#RemoveCart-'+id).html('Add to Cart');
+      // addToCart(product, id);
     },
     addToCart(product, id){
       // sessionStorage.productId = this.productIds;
-      this.productIds.push(id);
-      this.CartProducts.push(product);
-      console.log('', this.CartProducts.length);
-      $('#cart-'+id).html('Added to Cart');
-      sessionStorage.setItem('CartProducts', JSON.stringify(this.CartProducts));
-      sessionStorage.setItem('productIds', JSON.stringify(this.productIds));
-      sessionStorage.CartProductsLength = this.CartProducts.length;
-      console.log(this.CartProducts);
+      // $('.addToCart').html('Add to Cart');
+      if (sessionStorage.CartProducts) {
+        if (JSON.parse(sessionStorage.CartProducts).length != 0) {
+          let cartProductsArr = JSON.parse(sessionStorage.CartProducts)
+          cartProductsArr.forEach(function(key, value) {
+            // console.log(`key ${key.id} value ${value}`)
+            if (key.id == id) {
+              $('#cart-'+id).html('Add to Cart');
+              $('#RemoveCart-'+id).click();
+              // this.$emit("RemoveCart(product, id)");
+              // var c = this.RemoveCart(product, id);
+              // return(c);
+              // app.RemoveCart(product, id);
+              // methods.RemoveCart(product, id);
+              // vm.RemoveCart(product, id);
+              // this.RemoveCart(product, id);
+              // RemoveCart(product, id);
+            }
+          })
+          $('#RemoveCart-'+id).click();
+          cartProductsArr.push(product)
+          sessionStorage.setItem('CartProducts', JSON.stringify(cartProductsArr));
+          let productIdsArr = JSON.parse(sessionStorage.productIds)
+          productIdsArr.push(id)
+          sessionStorage.setItem('productIds', JSON.stringify(productIdsArr));
+          sessionStorage.CartProductsLength = cartProductsArr.length;
+          $('#cart-'+id).html('Added to Cart');
+          // $('#cart-'+id).empty();
+          // console.log($("#thumbnail"));
+          // $("#RemoveCart").empty();
+          // $("#length").append(this.length);
+          // alert('this')
+          $('#RemoveCart-'+id).click();
+        } else {
+          this.productIds.push(id);
+          this.CartProducts.push(product);
+          sessionStorage.setItem('CartProducts', JSON.stringify(this.CartProducts));
+          sessionStorage.setItem('productIds', JSON.stringify(this.productIds));
+          sessionStorage.CartProductsLength = this.CartProducts.length;
+          $('#cart-'+id).html('Added to Cart');
+          // $('#cart-'+id).empty();
+          // $('#cart-'+id).append(this.length);
+          // console.log($("#thumbnail"));
+          // $("#RemoveCart").empty();
+          // $("#length").append(this.length);
+        }
+      } 
     },
   },
 };
@@ -307,7 +286,7 @@ export default {
   <Breadcrumbs />
   <div>
     <div>
-      <div class="sidebar" style="top: 15%;left: 0%;margin-top:1%;">
+      <div class="sidebar" style="top: 15%;left: 0%;margin-top:0;">
       
         <a class="active" href="/products">Products</a>
         <button class="isActive" id="phone" href="" @click="fetchData('phone')">Smartphones</button> 
@@ -323,17 +302,17 @@ export default {
         <button class="isActive" id="ring" href="" @click="fetchData('ring')">Rings</button> 
       </div>
     </div>
-    <div>
+    <div style="margin-top: 12%;">
       <div class="container">
         <div class="row text-center">
           <div class="col-md-4 col-sm-6" v-for="(product, index) in products" :key="index">
-            <input type="hidden" :value="index" name="index">
-            <a href="#" class="thumbnail card" style="height:95%;">
+            <input type="hidden" :value="product.id" name="index">
+            <a href="#" :id="'thumbnail-' + product.id" class="thumbnail card" style="height:95%;">
               <img :src="product.thumbnail" alt="{{ product.title }}" style="height: 50%;width: 100%;">
               <div class="caption">
                 <h6>{{ product.title }}</h6>
-                <p>Price: $ {{ product.price }}, 00</p>{{cartProductIds}}
-                <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart" :title="productId" @click="addToCart(product, product.id)" v-if="product.id == cartProductId">Added to Cart</button>
+                <p>Price: $ {{ product.price }}, 00</p> 
+                <button :id="'RemoveCart-' + product.id" class="btn btn-primary cart addToCart" :title="productId" @click="RemoveCart(product, product.id)" v-if="cartProductIds.includes(product.id)">Added to Cart</button>
                 <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart" :title="productId" @click="addToCart(product, product.id)" v-else>Add to Cart</button>
                 <button class="btn btn-primary" :href="product.id" style="margin-top: 5%;margin-bottom: 5%;">Buy Now</button>
               </div>

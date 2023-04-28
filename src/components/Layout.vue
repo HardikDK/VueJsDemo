@@ -21,7 +21,7 @@ import router from '../router'
 <template>
   <Header />    
   <div style="margin-bottom: 100%;bottem:75%;margin-top: 5%;right: 2%;">
-    <v-breadcrumbs style="position:fixed;">
+    <v-breadcrumbs style="position: fixed;margin-top: 1%;">
       <template v-for="(matched, idx) in this.$route.matched"
         :key="idx">
         {{ matched.name }}
