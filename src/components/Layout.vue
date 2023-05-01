@@ -24,8 +24,10 @@ import router from '../router'
     <v-breadcrumbs style="position: fixed;margin-top: 1%;">
       <template v-for="(matched, idx) in this.$route.matched"
         :key="idx">
-        {{ matched.name }}
-        <span v-if="idx != Object.keys(this.$route.matched).length - 1"> / </span>
+        <div v-if="matched.name == ''">
+          {{ matched.name }}
+          <span v-if="idx != Object.keys(this.$route.matched).length - 1"> / </span>
+        </div>
       </template>
     </v-breadcrumbs>
   </div>

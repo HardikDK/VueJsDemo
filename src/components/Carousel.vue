@@ -1,54 +1,94 @@
 <script>
+    export default {
+        data () {
+            return {
+                items: [
+                    { title: 'Click Me' },
+                    { title: 'Click Me' },
+                    { title: 'Click Me' },
+                    { title: 'Click Me 2' },
+                ],
+                activeBtn: 1,
+                colors: [
+                    'indigo',
+                    'warning',
+                    'pink darken-2',
+                    'red lighten-1',
+                    'deep-purple accent-4',
+                ],
+                slides: [
+                    'First',
+                    'Second',
+                    'Third',
+                    'Fourth',
+                    'Fifth',
+                ],
+            }
+        },
+    }
 </script>
-
 <template>
-<div class="container">
-<v-carousel
-    cycle
-    height="400"
-    width="400"
-    hide-delimiter-background
-    show-arrows="hover"
-    >
-  <v-carousel-item class="textOverImage"
-    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-    cover
-  ></v-carousel-item>
-
-  <v-carousel-item class="textOverImage"
-    src="https://cdn.vuetifyjs.com/images/cards/hotel.jpg"
-    cover
-  ></v-carousel-item>
-
-  <v-carousel-item class="textOverImage"
-    src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-    cover
-  ></v-carousel-item>
-  <v-sheet
-        height="1000px"
-        width="1500px"
+  <div>
+    <v-carousel cycle height="100%" width="100%" hide-delimiters>
+      <v-carousel-item
+        src="../src/assets/img/home/slider4.jpg"
       >
-        <div class="d-flex fill-height justify-center align-center">
-          <div class="text-h2">
-            {{ slide }} Slide
-          </div>
-        </div>
-      </v-sheet>
-</v-carousel>
-</div>
+        <v-row
+          class="fill-height"
+          align="center"
+          justify="center"
+        >
+          <div class="display-2 white--text pl-5 pr-5 hidden-sm-only"><strong>Upto 60% + Extra 10%</strong></div><br/>
+        </v-row>
+      </v-carousel-item>
+      <v-carousel-item
+        src="../src/assets/img/home/slider2.jpg"
+      >
+        <v-row
+          class="fill-height"
+          align="center"
+          justify="center"
+        >
+          <div class="display-2 white--text pl-5 pr-5 hidden-sm-only"><strong>Upto 60% + Extra 10%</strong></div><br/>
+        </v-row>
+      </v-carousel-item>
+      <v-carousel-item
+        src="../src/assets/img/home/slider3.jpg"
+      >
+        <v-row
+          class="fill-height"
+          align="center"
+          justify="center"
+        >
+          <div class="display-2 white--text pl-5 pr-5 hidden-sm-only"><strong>Upto 60% + Extra 10%</strong></div><br/>
+        </v-row>
+      </v-carousel-item>
+      <v-carousel-item
+        src="../src/assets/img/home/slider1.jpg"
+      >
+        <v-row
+          class="fill-height"
+          align="center"
+          justify="center"
+        >
+          <div class="display-2 white--text pl-5 pr-5 hidden-sm-only"><strong>Upto 60% + Extra 10%</strong></div><br/>
+        </v-row>
+      </v-carousel-item>
+
+    </v-carousel>
+
+  </div>
+
 </template>
 
-<style scoped>
-
-.container {
-  margin: 75px 0;
-  border-radius: 4px;
-  background-size: 100%;
-  background-position: center;
-  transition: 0.5s;
-  overflow: hidden;
-  animation: slide 27s infinite;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
+<style>
+  .v-card--reveal {
+    align-items: center;
+    bottom: 0;
+    justify-content: center;
+    opacity: .5;
+    position: absolute;
+    width: 100%;
+  }
 </style>
+
