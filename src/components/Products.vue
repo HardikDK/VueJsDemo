@@ -203,6 +203,7 @@ export default {
             // this.limit = this.limit + 6;
     },
     RemoveCart(product, id){
+      // alert('RC')
       let cartProducts = JSON.parse(sessionStorage.CartProducts);
       let products = cartProducts.filter((el) => el.id !== id);
       // this.products = products;
@@ -216,56 +217,93 @@ export default {
       // this.productIds = ids;
       sessionStorage.productIds = JSON.stringify(ids);
       // $('#cart-'+id).html('Add to Cart');
-      $('#RemoveCart-'+id).html('Add to Cart');
+      $('#cart-'+id).html('Add to Cart');
       // addToCart(product, id);
     },
     addToCart(product, id){
       // sessionStorage.productId = this.productIds;
       // $('.addToCart').html('Add to Cart');
-      if (sessionStorage.CartProducts) {
-        if (JSON.parse(sessionStorage.CartProducts).length != 0) {
-          let cartProductsArr = JSON.parse(sessionStorage.CartProducts)
-          cartProductsArr.forEach(function(key, value) {
-            // console.log(`key ${key.id} value ${value}`)
-            if (key.id == id) {
-              $('#cart-'+id).html('Add to Cart');
-              $('#RemoveCart-'+id).click();
-              // this.$emit("RemoveCart(product, id)");
-              // var c = this.RemoveCart(product, id);
-              // return(c);
-              // app.RemoveCart(product, id);
-              // methods.RemoveCart(product, id);
-              // vm.RemoveCart(product, id);
-              // this.RemoveCart(product, id);
-              // RemoveCart(product, id);
+      console.log('if', sessionStorage.jwtToken && sessionStorage.jwtToken != '')
+      if (sessionStorage.jwtToken && sessionStorage.jwtToken != '') {
+        console.log('products', product)
+        console.log('ids', id)
+        // insert into product qry 
+        let productId = id ? id : '';
+        let productTitle = product.title ? product.title : '';
+        let productDesc = product.description ? product.description : '';
+        let productPrice = product.price ? product.price : '';
+        let productDiscPerc = product.discountPercentage ? product.discountPercentage : '';
+        let productRating = product.rating ? product.rating : '';
+        let productStock = product.stock ? product.stock : '';
+        let productThumbnail = product.thumbnail ? product.thumbnail : '';
+        let productCategory = product.category ? product.category : '';
+        let productBrand = product.brand ? product.brand : '';
+        // alert(productId)
+        // alert(productTitle)
+        // let productQuery = 
+        // insert into addtocart qry 
+      } else {
+        if (sessionStorage.CartProducts) {
+          if (JSON.parse(sessionStorage.CartProducts).length != 0) {
+            let cartProductsArr = JSON.parse(sessionStorage.CartProducts)
+            let removeCart = (product, id) => {
+              // alert('rC')
+              this.RemoveCart(product, id);
             }
-          })
-          $('#RemoveCart-'+id).click();
-          cartProductsArr.push(product)
-          sessionStorage.setItem('CartProducts', JSON.stringify(cartProductsArr));
-          let productIdsArr = JSON.parse(sessionStorage.productIds)
-          productIdsArr.push(id)
-          sessionStorage.setItem('productIds', JSON.stringify(productIdsArr));
-          sessionStorage.CartProductsLength = cartProductsArr.length;
-          $('#cart-'+id).html('Added to Cart');
-          // $('#cart-'+id).empty();
-          // console.log($("#thumbnail"));
-          // $("#RemoveCart").empty();
-          // $("#length").append(this.length);
-          // alert('this')
-          $('#RemoveCart-'+id).click();
-        } else {
-          this.productIds.push(id);
-          this.CartProducts.push(product);
-          sessionStorage.setItem('CartProducts', JSON.stringify(this.CartProducts));
-          sessionStorage.setItem('productIds', JSON.stringify(this.productIds));
-          sessionStorage.CartProductsLength = this.CartProducts.length;
-          $('#cart-'+id).html('Added to Cart');
-          // $('#cart-'+id).empty();
-          // $('#cart-'+id).append(this.length);
-          // console.log($("#thumbnail"));
-          // $("#RemoveCart").empty();
-          // $("#length").append(this.length);
+            cartProductsArr.forEach(function(key, value) {
+              // console.log(`key ${key.id} value ${value}`)
+              if (key.id == id) {
+                // alert('0')
+                // alert('loop if')
+                $('#cart-'+id).html('Add to Cart');
+                removeCart(product, id);
+                $('#RemoveCart-'+id).click();
+                // this.$emit("RemoveCart(product, id)");
+                // var c = this.RemoveCart(product, id);
+                // return(c);
+                // app.RemoveCart(product, id);
+                // methods.RemoveCart(product, id);
+                // vm.RemoveCart(product, id);
+                // this.RemoveCart(product, id);
+                // RemoveCart(product, id);
+              }
+              else {
+                // alert('loop else')
+                cartProductsArr.push(product)
+                sessionStorage.setItem('CartProducts', JSON.stringify(cartProductsArr));
+                let productIdsArr = JSON.parse(sessionStorage.productIds)
+                productIdsArr.push(id)
+                sessionStorage.setItem('productIds', JSON.stringify(productIdsArr));
+                sessionStorage.CartProductsLength = cartProductsArr.length;
+                $('#cart-'+id).html('Added to Cart');
+              }
+            })
+            $('#RemoveCart-'+id).click();
+            // $('#cart-'+id).empty();
+            // console.log($("#thumbnail"));
+            // $("#RemoveCart").empty();
+            // $("#length").append(this.length);
+            // alert('this')
+            $('#RemoveCart-'+id).click();
+          } else {
+            // alert('if else')
+            let cartProductsArr = [];
+            let cartProductsIdsArr = [];
+            // console.log('sessionStorage', sessionStorage.CartProducts)
+            // console.log('this.CartProducts', this.CartProducts);
+            // console.log('this.productIds', this.productIds);
+            cartProductsIdsArr.push(id);
+            cartProductsArr.push(product);
+            sessionStorage.setItem('CartProducts', JSON.stringify(cartProductsArr));
+            sessionStorage.setItem('productIds', JSON.stringify(cartProductsIdsArr));
+            sessionStorage.CartProductsLength = cartProductsArr.length;
+            $('#cart-'+id).html('Added to Cart');
+            // $('#cart-'+id).empty();
+            // $('#cart-'+id).append(this.length);
+            // console.log($("#thumbnail"));
+            // $("#RemoveCart").empty();
+            // $("#length").append(this.length);
+          }
         }
       } 
     },
@@ -312,7 +350,7 @@ export default {
               <div class="caption">
                 <h6>{{ product.title }}</h6>
                 <p>Price: $ {{ product.price }}, 00</p> 
-                <button :id="'RemoveCart-' + product.id" class="btn btn-primary cart addToCart" :title="productId" @click="RemoveCart(product, product.id)" v-if="cartProductIds.includes(product.id)">Added to Cart</button>
+                <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart" :title="productId" @click="RemoveCart(product, product.id)" v-if="cartProductIds.includes(product.id)">Added to Cart</button>
                 <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart" :title="productId" @click="addToCart(product, product.id)" v-else>Add to Cart</button>
                 <button class="btn btn-primary" :href="product.id" style="margin-top: 5%;margin-bottom: 5%;">Buy Now</button>
               </div>
