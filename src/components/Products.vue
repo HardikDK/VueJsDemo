@@ -72,6 +72,7 @@ export default {
         this.total = response.data.total;
         // this.products = response.data.products.slice(0, this.length);
         this.products = response.data.products;
+        this.length = this.products.length;
         // return this.products.slice(0, this.length);
         // this.products = this.totalProducts.slice(0, this.length);
       });
@@ -90,15 +91,17 @@ export default {
       })
 
     let cartProductIds = [];
-    let productIds = JSON.parse(sessionStorage.productIds);
-    productIds.forEach(function(key, value) {
-      cartProductIds.push(key)
-      // cartProductId = key;
-      if ($('#cart-'+key)) {
-        $('#cart-'+key).empty();
-        $('#cart-'+key).append('Added to Cart');
-      }
-    })
+    if (sessionStorage.productIds) {
+      let productIds = JSON.parse(sessionStorage.productIds);
+      productIds.forEach(function(key, value) {
+        cartProductIds.push(key)
+        // cartProductId = key;
+        if ($('#cart-'+key)) {
+          $('#cart-'+key).empty();
+          $('#cart-'+key).append('Added to Cart');
+        }
+      })
+    }
     this.cartProductIds = cartProductIds;
     let index = cartProductIds;
     // this.cartProductId = cartProductId;
@@ -148,6 +151,7 @@ export default {
         this.items = resp;
         this.products = resp.data.products
         this.columns = Object.keys(resp.data.products[0]);
+        this.length = this.products.length;
       })
       .catch(error => {
         if (error.response != undefined) {
@@ -319,11 +323,18 @@ export default {
 
 </script>
 
-<template>
+<template style="max-width: 1280px;">
   <Sidebar />
   <Breadcrumbs />
   <div>
     <div>
+      <v-breadcrumbs style="position: fixed;top: 9%;">
+        <template v-for="(matched, idx) in this.$route.matched"
+          :key="idx">
+          {{ matched.name }}
+          <span v-if="idx != Object.keys(this.$route.matched).length - 1"> / </span>
+        </template>
+      </v-breadcrumbs>
       <div class="sidebar" style="top: 15%;left: 0%;margin-top:0;">
       
         <a class="active" href="/products">Products</a>
@@ -340,18 +351,20 @@ export default {
         <button class="isActive" id="ring" href="" @click="fetchData('ring')">Rings</button> 
       </div>
     </div>
-    <div style="margin-top: 12%;">
+  </div>
+  <div>
+    <div style="margin-top: 12%;margin-left: 28%;">
       <div class="container">
         <div class="row text-center">
-          <div class="col-md-4 col-sm-6" v-for="(product, index) in products" :key="index">
+          <div class="col-4" v-for="(product, index) in products" :key="index">
             <input type="hidden" :value="product.id" name="index">
             <a href="#" :id="'thumbnail-' + product.id" class="thumbnail card" style="height:95%;">
               <img :src="product.thumbnail" alt="{{ product.title }}" style="height: 50%;width: 100%;">
               <div class="caption">
                 <h6>{{ product.title }}</h6>
                 <p>Price: $ {{ product.price }}, 00</p> 
-                <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart" :title="productId" @click="RemoveCart(product, product.id)" v-if="cartProductIds.includes(product.id)">Added to Cart</button>
-                <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart" :title="productId" @click="addToCart(product, product.id)" v-else>Add to Cart</button>
+                <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart mr-3" :title="productId" @click="RemoveCart(product, product.id)" v-if="cartProductIds.includes(product.id)">Added to Cart</button>
+                <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart mr-3" :title="productId" @click="addToCart(product, product.id)" v-else>Add to Cart</button>
                 <button class="btn btn-primary" :href="product.id" style="margin-top: 5%;margin-bottom: 5%;">Buy Now</button>
               </div>
             </a>
@@ -360,7 +373,7 @@ export default {
       </div>
     </div>
     
-    <div v-if="limit >= 6 && limit <= total" style="margin-bottom: 10%;margin-left: 80%;">
+    <div v-if="limit >= 6 && limit <= total" style="margin-bottom: 10%;margin-left: 60%;">
       <button class="btn btn-primary" href="" @click="loadMoreData">Load More</button>
     </div>
   </div>
@@ -424,6 +437,7 @@ div.content {
   padding: 1px 16px;
   height: 1000px;
 }
+
 
 @media screen and (max-width: 700px) {
   .sidebar {

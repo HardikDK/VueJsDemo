@@ -15,7 +15,7 @@ export default {
     // console.log('CartProducts', JSON.parse(this.CartProducts));
     this.products = JSON.parse(this.CartProducts);
     // alert(this.productIds);
-    this.productIds = JSON.parse(this.productIds);
+    this.productIds = this.productIds ? JSON.parse(this.productIds) : '';
     
     this.isLength = this.length == 1 ? true : false;
     // let cartProductsLength = this.length;

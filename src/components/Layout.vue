@@ -20,17 +20,6 @@ import router from '../router'
 
 <template>
   <Header />    
-  <div style="margin-bottom: 100%;bottem:75%;margin-top: 5%;right: 2%;">
-    <v-breadcrumbs style="position: fixed;margin-top: 1%;">
-      <template v-for="(matched, idx) in this.$route.matched"
-        :key="idx">
-        <div v-if="matched.name == ''">
-          {{ matched.name }}
-          <span v-if="idx != Object.keys(this.$route.matched).length - 1"> / </span>
-        </div>
-      </template>
-    </v-breadcrumbs>
-  </div>
   <main style="z-index: 1;">
     <router-view/>
   </main>
