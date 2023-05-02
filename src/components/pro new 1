@@ -1,0 +1,21 @@
+pro new 1
+
+    <div style="margin-top: 12%;margin-left: 28%;">
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-md-4 col-sm-6 col-xs-12" v-for="(product, index) in products" :key="index">
+            <input type="hidden" :value="product.id" name="index">
+            <a href="#" :id="'thumbnail-' + product.id" class="thumbnail card" style="height:95%;">
+              <img :src="product.thumbnail" alt="{{ product.title }}" style="height:200px;" :aspect-ratio="16/9">
+              <div class="caption">
+                <h6>{{ product.title }}</h6>
+                <p>Price: $ {{ product.price }}, 00</p> 
+                <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart mr-3" :title="productId" @click="RemoveCart(product, product.id)" v-if="cartProductIds.includes(product.id)">Added to Cart</button>
+                <button :id="'cart-' + product.id" class="btn btn-primary cart addToCart mr-3" :title="productId" @click="addToCart(product, product.id)" v-else>Add to Cart</button>
+                <button class="btn btn-primary" :href="product.id" style="margin-top: 5%;margin-bottom: 5%;">Buy Now</button>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
