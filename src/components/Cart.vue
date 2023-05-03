@@ -65,10 +65,10 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div id="products">
       <div class="container">
         <div class="row text-center">
-          <div class="col-md-4 col-sm-6 style" id="style" v-for="(product, index) in products" :key="index" :style="[ isLength ? {'width':'40%'} : '']">
+          <div class="col-4" id="style" v-for="(product, index) in products" :key="index" :style="[ isLength ? {'width':'40%'} : '']">
             <input type="hidden" :value="product.id" name="{{ index }}">
             <a href="#" class="thumbnail card" style="height:95%;">
               <img :src="product.thumbnail" alt="{{ product.title }}" style="height: 50%;width: 100%;">
@@ -86,4 +86,18 @@ export default {
 </template>
 
 <style scoped>
+body {
+  margin: 0;
+  font-family: "Lato", sans-serif;
+}
+
+@media (min-width: 1024px){
+  #products {
+    display: grid;
+    grid-template-columns: none;
+  }
+}
+#products{
+  max-width: 768px;
+}
 </style>
