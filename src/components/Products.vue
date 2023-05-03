@@ -342,13 +342,13 @@ export default {
 <template style="max-width: 1280px;">
   <Sidebar />
   <Breadcrumbs />
-        <v-breadcrumbs style="position: fixed;top: 9%;">
-          <template v-for="(matched, idx) in this.$route.matched"
-            :key="idx">
-            {{ matched.name }}
-            <span v-if="idx != Object.keys(this.$route.matched).length - 1"> / </span>
-          </template>
-        </v-breadcrumbs>
+  <v-breadcrumbs style="position: fixed;top: 9%;">
+    <template v-for="(matched, idx) in this.$route.matched"
+      :key="idx">
+      {{ matched.name }}
+      <span v-if="idx != Object.keys(this.$route.matched).length - 1"> / </span>
+    </template>
+  </v-breadcrumbs>
   <div class="layout">
     <div>
       <div>
