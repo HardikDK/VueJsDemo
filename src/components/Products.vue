@@ -349,213 +349,53 @@ export default {
       <span v-if="idx != Object.keys(this.$route.matched).length - 1"> / </span>
     </template>
   </v-breadcrumbs>
-  <div class="main">
-      <div class="filter">
-        <h4> CATEGORIES </h4>
-        <button class="isActive" id="furniture" href="" @click="fetchData('furniture')">Furniture</button>
-        <button class="isActive" id="handbags" href="" @click="fetchData('handbags')">Hand Bags</button>
-        <div class="categories" v-for="category in categories" :key="categorie" @click="sort_by_category(categorie)">
-            <input type="checkbox">
-            <span for="checkbox">{{ category }} </span>
+  <div class="layout">
+    <div>
+      <div>
+        <div class="section1" style="position: fixed;top: 10%;">
+          <p class="sidebar-title">categories</p>
+          <ul>
+            <li class="isActive" id="phone"><button class="isActive" id="phone" href="" @click="fetchData('phone')">Smartphones</button></li>
+            <li class="isActive" id="Laptop"><button class="isActive" id="Laptop" href="" @click="fetchData('Laptop')">Laptops</button></li>
+            <li class="isActive" id="sunglasses"><button class="isActive" id="sunglasses" href="" @click="fetchData('sunglasses')">Sunglasses</button></li>
+            <li class="isActive" id="furniture"><button class="isActive" id="furniture" href="" @click="fetchData('furniture')">Furniture</button></li>
+            <li class="isActive" id="home"><button class="isActive" id="home" href="" @click="fetchData('home')">home-decoration</button></li>
+            <li class="isActive" id="motorcycle"><button class="isActive" id="motorcycle" href="" @click="fetchData('motorcycle')">Motorcycle</button></li>
+            <li class="isActive" id="lighting"><button class="isActive" id="lighting" href="" @click="fetchData('lighting')">Lighting</button></li>
+            <li class="isActive" id="watch"><button class="isActive" id="watch" href="" @click="fetchData('watch')">Watch</button></li>
+            <li class="isActive" id="bags"><button class="isActive" id="bags" href="" @click="fetchData('bags')">Bags</button></li>
+            <li class="isActive" id="handbags"><button class="isActive" id="handbags" href="" @click="fetchData('handbags')">Hand Bags</button></li>
+            <li class="isActive" id="ring"><button class="isActive" id="ring" href="" @click="fetchData('ring')">Rings</button></li>
+          </ul>
         </div>
       </div>
-      
-          <h1> CATALOG </h1>
-          <div class="searcharea">
-              <search @searched_word="handle_search"></search>
-          </div>
-          <div class="products">
-        <div class="card" v-for="product in products" :key="product.id">
-            <img :src="product.thumbnail" :alt="product.title">
-
-            <div class="details">
-                <div class="subdetails">
-                    <small> {{ product.category }} </small>
-                    <average></average>
-                </div>
-                <p><strong> {{ product.title }} </strong> </p>
-                <!-- <p style="color: gray;"> PRICE : </p> -->
-                <div class="prices">
-                    <span> {{ product.price }} € </span>
-                    <s> {{ product.strikeprice }} € </s>
-                </div>
+    </div>
+    <div class="section2" style="margin-top: 6%;margin-bottom:6%;">
+      <div class="col-4" v-for="product in products" :key="product.id">
+        <div class="card shadow-sm">
+          <img class="card-img-top card-image" :src="product.thumbnail" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title" @click="productDetails(product.id)">{{product.title}}</h5>
+            <h5 class="card-title">Rs. &#8377; {{product.price*70}}</h5>
+            <p class="card-text desc">{{ product.description }}</p>
+            <p class="card-text ">{{product.category}}</p>
+            <p class="card-text"><small class="text-muted">Rating:{{product.rating.rate}}/5</small></p>
+            <div class="d-flex" style="justify-content: space-around;">
+              <button class="btn btn-warning btn-text" :id="'cart-' + product.id" :title="productId" @click="RemoveCart(product, product.id)" v-if="cartProductIds.includes(product.id)">Added to Cart</button>
+              <button class="btn btn-warning btn-text" :id="'cart-' + product.id" type="button" @click="addToCart(product, product.id)" v-else>Add to Cart!</button>
+              <button class="btn btn-primary" type="button">Buy Now!</button>
             </div>
-
-            <svg @click="fillsvg" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path :fill-rule="like" clip-rule="evenodd"
-                    d="M12.0122 5.57169L10.9252 4.48469C8.77734 2.33681 5.29493 2.33681 3.14705 4.48469C0.999162 6.63258 0.999162 10.115 3.14705 12.2629L11.9859 21.1017L11.9877 21.0999L12.014 21.1262L20.8528 12.2874C23.0007 10.1395 23.0007 6.65711 20.8528 4.50923C18.705 2.36134 15.2226 2.36134 13.0747 4.50923L12.0122 5.57169ZM11.9877 18.2715L16.9239 13.3352L18.3747 11.9342L18.3762 11.9356L19.4386 10.8732C20.8055 9.50635 20.8055 7.29028 19.4386 5.92344C18.0718 4.55661 15.8557 4.55661 14.4889 5.92344L12.0133 8.39904L12.006 8.3918L12.005 8.39287L9.51101 5.89891C8.14417 4.53207 5.92809 4.53207 4.56126 5.89891C3.19442 7.26574 3.19442 9.48182 4.56126 10.8487L7.10068 13.3881L7.10248 13.3863L11.9877 18.2715Z"
-                    fill="red" />
-            </svg>
-            <button class="cart" @click="addToCart(product, product.id)">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M5 4H19C19.5523 4 20 4.44771 20 5V19C20 19.5523 19.5523 20 19 20H5C4.44772 20 4 19.5523 4 19V5C4 4.44772 4.44771 4 5 4ZM2 5C2 3.34315 3.34315 2 5 2H19C20.6569 2 22 3.34315 22 5V19C22 20.6569 20.6569 22 19 22H5C3.34315 22 2 20.6569 2 19V5ZM12 12C9.23858 12 7 9.31371 7 6H9C9 8.56606 10.6691 10 12 10C13.3309 10 15 8.56606 15 6H17C17 9.31371 14.7614 12 12 12Z"
-                        fill="white" />
-                </svg>
-            </button>
-            <button class="compare" @click="add_to_compare()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16 13V11.5H10V9.5H16V8L19 10.5L16 13Z" fill="white" />
-                                <path d="M8 17V15.5H14V13.5H8V12L5 14.5L8 17Z" fill="white" />
-                            </svg>
-            </button>
-            
-        </div>
           </div>
-      
+        </div>
+      </div>
+      <div v-if="limit >= 6 && limit <= total" style="margin-bottom: 10%;margin-left: 60%;">
+        <button class="btn btn-primary" href="" @click="loadMoreData">Load More</button>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-
-.main {
-    z-index: 0;
-    margin-top: 140px;
-    display: grid;
-}
-
-.filter {
-    position: fixed;
-    width: 20%;
-    border-right: 1px solid #ccc;
-    height: calc(100vh - 140px);
-    overflow-x: hidden;
-}
-
-main {
-    position: absolute;
-    margin-left: 20%;
-    width: 80%;
-}
-
-main h1 {
-    font-weight: bolder;
-    margin: 30px 0px;
-    margin-left: 50px;
-}
-
-.searcharea {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-}
-
-.products {
-    padding: 30px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-
-@media screen and (max-width: 1500px) {
-    .products {
-        padding: 30px;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-}
-
-@media screen and (max-width: 1200px) {
-    .products {
-        padding: 30px;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-}
-
-
-.categories {
-    padding: 0px 20px;
-}
-
-.categories h4 {
-    margin: 10px 0px;
-    font-weight: bold;
-}
-
-.categories span {
-    margin: 0px 15px;
-}
-
-input[type='checkbox'] {
-    accent-color: var(--secondary);
-}
-
-
-h4 {
-    margin: 20px 15px;
-    font-weight: bold;
-}
-
-.card {
-    background-color: white;
-    border: 1px solid transparent;
-    border-radius: 10px;
-    padding: 30px;
-    margin: 10px;
-    position: relative;
-}
-
-small {
-    color: gray;
-}
-
-img {
-    width: 100%;
-    height: 300px;
-    margin-bottom: 10px;
-}
-
-.details {
-    border-top: 1px solid #ccc;
-}
-.details strong {
-    font-size: 1.1em;
-}
-.details p {
-    width: 60%;
-}
-.subdetails {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-.prices span {
-    font-weight: bold;
-    font-size: 1.5em;
-}
-
-strike {
-    color: gray;
-}
-
-.cart {
-    cursor: pointer;
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    width: 50px;
-    height: 50px;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-    background-color: var(--secondary);
-}
-.compare {
-    cursor: pointer;
-    position: absolute;
-    bottom: 15px;
-    right: 75px;
-    width: 50px;
-    height: 50px;
-    border: 1px solid #ccc;
-    border-radius: 50%;
-    background-color: var(--secondary);
-}
-
-
-
-
-
-
-
-
 
 
 .layout{

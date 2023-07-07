@@ -21,6 +21,7 @@ export default {
       let password = this.password ? this.password : ''
       formData.append('email', email)
       formData.append('password', password)
+      console.log('formData', formData)
       // axios.get('http://127.0.0.1:8000/api/get_all_user', {
       axios.post('http://127.0.0.1:8000/api/auth/login', formData, {
         // method: 'GET',
